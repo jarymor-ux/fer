@@ -44,4 +44,6 @@ History - HashSet<Message>
 **Fields**
 
 ChatID - uuid
+Members - HashSet<User>
+History - HashSet<Message>
 //TODO:
