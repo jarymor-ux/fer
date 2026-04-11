@@ -5,6 +5,7 @@
 ### User
 
 **Fields**
+
 ID = uuid
 WS_CONNECTION - *ws.Conn
 messages - chan []byte
@@ -14,6 +15,7 @@ group_chats - []GroupChat
 ### Credentials
 
 **Fields**
+
 user_uuid - *User.ID
 phone - Russian Phone Number(string)
 password - User Password(string)
@@ -23,16 +25,23 @@ password - User Password(string)
 **Fields**
 
 Sender - *User.ID
-Reciver - //TODO:
+ReciverID - uuid
+MessageText - []byte
 Time - unix timestamp
 
 ### Chat
+
+**Fields**
+
+ChatID - uuid
 FirstMessageSender - *User.ID
 Member1 - *User.ID
 Member2 - *User.ID
 History - HashSet<Message>
 
-
 ### GroupChat
 
+**Fields**
+
+ChatID - uuid
 //TODO:
