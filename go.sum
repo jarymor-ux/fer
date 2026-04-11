@@ -1,0 +1,6 @@
+braces.dev/errtrace v0.4.0 h1:+ruxKCIYhayA06DyNgz+8UE2znL20G6CtqDE7PR72vo=
+braces.dev/errtrace v0.4.0/go.mod h1:Zor2Jn83tkhfEdiioKa4efFy62DYcOH06qoIea9QDYs=
+github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=
+github.com/google/uuid v1.6.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
+github.com/gorilla/websocket v1.5.3 h1:saDtZ6Pbx/0u+bgYQ3q96pZgCzfhKXGPqt7kZ72aNNg=
+github.com/gorilla/websocket v1.5.3/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
