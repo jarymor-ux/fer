@@ -1,8 +1,6 @@
 package user
 
-import (
-	"github.com/jarymor-ux/fer/internal/domain/entity/types"
-)
+import "github.com/jarymor-ux/fer/internal/domain/types"
 
 type User struct {
 	ID  types.UserID

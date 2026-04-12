@@ -1,8 +1,6 @@
 package message
 
-import (
-	"github.com/jarymor-ux/fer/internal/domain/entity/types"
-)
+import "github.com/jarymor-ux/fer/internal/domain/types"
 
 type Message struct {
 	ID          types.MessageID

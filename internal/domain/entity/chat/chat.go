@@ -2,7 +2,7 @@ package chat
 
 import (
 	"github.com/google/uuid"
-	"github.com/jarymor-ux/fer/internal/domain/entity/types"
+	"github.com/jarymor-ux/fer/internal/domain/types"
 )
 
 type Chat struct {

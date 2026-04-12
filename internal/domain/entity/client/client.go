@@ -4,7 +4,8 @@ import (
 	"net"
 
 	ws "github.com/gorilla/websocket"
-	"github.com/jarymor-ux/fer/internal/domain/entity/types"
+	"github.com/jarymor-ux/fer/internal/domain/types"
+
 )
 
 type Client struct {
