@@ -63,7 +63,7 @@ tests := []PhoneStructTest{
 	}
 for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			result := test.phone.ValidatePhone()
+			_, result := test.phone.ValidatePhone()
 			if result != test.expected {
 				t.Errorf("test %s failed: expected %v, got %v",
 					test.name, test.expected, result)
