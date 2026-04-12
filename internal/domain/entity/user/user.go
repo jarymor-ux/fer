@@ -1,14 +1,11 @@
 package user
 
 import (
-	"github.com/google/uuid"
-    ws "github.com/gorilla/websocket"
+	"github.com/jarymor-ux/fer/internal/domain/entity/types"
 )
 
 type User struct {
-	uid uuid.UUID
-	conn *ws.Conn
-	Send chan []byte
-	Chats any //TODO:implement this
-	GroupChats any //TODO:implement this
+	ID  types.UserID
+	Phone types.PhoneNumber
+	Chats []types.ChatID
 }

@@ -1,11 +1,14 @@
 package message
 
 import (
-	"github.com/google/uuid"
+	"github.com/jarymor-ux/fer/internal/domain/entity/types"
 )
 
 type Message struct {
-	MessageID, SenderID, ReciverID uuid.UUID
-	MessageText []byte
-	Time int64
+	ID          types.MessageID
+	ChatID      types.ChatID
+	SenderID    types.UserID
+	MessageText string
+	CreatedAt   int64
 }
+
