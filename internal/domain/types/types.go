@@ -24,12 +24,7 @@ type (
 	MessageID      uuid.UUID
 	ChatID         uuid.UUID
 	HashSet[t any] set.HashSet[t, string]
-	JSON           map[string]any
 )
-
-func NewJSON(key string, value any) JSON {
-	return JSON{key:value}
-}
 
 func (n PhoneNumber) NormalizePhone() (string, error) {
 	s := string(n)
