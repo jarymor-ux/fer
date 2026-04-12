@@ -5,10 +5,10 @@ import (
 )
 
 type Hub struct {
-	clients    map[*client.Client]bool
-	broadcast  chan []byte
-	register   chan *client.Client
-	unregister chan *client.Client
+	clients    map[*client.Client]bool //nolint:unused
+	broadcast  chan []byte             //nolint:unused
+	register   chan *client.Client     //nolint:unused
+	unregister chan *client.Client     //nolint:unused
 }
 
 func NewHub() *Hub {

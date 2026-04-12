@@ -31,17 +31,19 @@ func (n PhoneNumber) NormalizePhone() (string, error) {
 
 	s = strings.NewReplacer(" ", "", "-", "", "(", "", ")", "").Replace(s)
 
-	if strings.HasPrefix(s, "8") && len(s) == 11 {
-		s = "+7" + s[1:]
-		return s, nil
-	} else if !strings.HasPrefix(s, "+7") && len(s) == 10 {
-		s = "+7" + s
-		return s, nil
-	} else if strings.HasPrefix(s, "+7") && len(s) == 12 {
-		return s, nil
-	}
+	switch {
+	case strings.HasPrefix(s, "8") && len(s) == 11:
+		return "+7" + s[1:], nil
 
-	return "", errtrace.Wrap(errs.NewError(errs.ValidatePhoneError))
+	case !strings.HasPrefix(s, "+7") && len(s) == 10:
+		return "+7" + s, nil
+
+	case strings.HasPrefix(s, "+7") && len(s) == 12:
+		return s, nil
+
+	default:
+		return "", errtrace.Wrap(errs.NewError(errs.ValidatePhoneError))
+	}
 }
 
 func (n PhoneNumber) ValidatePhone() (bool, error) {

@@ -7,12 +7,14 @@ import (
 )
 
 type HTTPError struct {
-	Msg string `json:"error_msg"`
+	Msg    string `json:"error_msg"`
+	Status int    `json:"status"`
 }
 
-func NewHTTPError(msg string) *HTTPError {
+func NewHTTPError(msg string, status int) *HTTPError {
 	return &HTTPError{
-		Msg: msg,
+		Msg:    msg,
+		Status: status,
 	}
 }
 
@@ -21,5 +23,6 @@ func (h HTTPError) GetJSONBytes() ([]byte, error) {
 	if err != nil {
 		return []byte{}, errtrace.Wrap(err)
 	}
+
 	return bytes, err
 }

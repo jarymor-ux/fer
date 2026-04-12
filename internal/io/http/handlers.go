@@ -2,6 +2,7 @@ package http
 
 import (
 	"net/http"
+	"time"
 
 	"braces.dev/errtrace"
 	ws "github.com/gorilla/websocket"
@@ -9,12 +10,12 @@ import (
 )
 
 type Handlers struct {
-	upgraider *ws.Upgrader
+	upgrader *ws.Upgrader
 }
 
-func newUpgraider() *ws.Upgrader {
+func newUpgrader() *ws.Upgrader {
 	return &ws.Upgrader{
-		HandshakeTimeout: 5,
+		HandshakeTimeout: 5 * time.Second,
 		ReadBufferSize:   2048, // TODO:пересмотреть размеры буферов
 		WriteBufferSize:  2048,
 		//WriteBufferPool:  nil, //Написать свою реализацию или же использовать готовый
@@ -31,22 +32,28 @@ func newUpgraider() *ws.Upgrader {
 
 func NewHandlers() *Handlers {
 	return &Handlers{
-		upgraider: newUpgraider(),
+		upgrader: newUpgrader(),
 	}
 }
 
-
-func (h *Handlers) setUpAndUpgade(w http.ResponseWriter, r *http.Request) error {
-	conn, err := h.upgraider.Upgrade(w,r, nil)
-	defer conn.Close()
-	if err != nil {
-		resp, err := response.NewHTTPError("Failed to create connection").GetJSONBytes()
+func (h *Handlers) setUpAndUpgade(w http.ResponseWriter, r *http.Request) (*ws.Conn, error) {
+	conn, uerr := h.upgrader.Upgrade(w, r, nil)
+	if uerr != nil {
+		resp, err := response.NewHTTPError("Failed to create connection", http.StatusInternalServerError).
+			GetJSONBytes()
 		if err != nil {
-			return errtrace.Wrap(err)
+			return nil, errtrace.Wrap(err)
 		}
-		w.Write(resp)
-		return errtrace.Wrap(err)
+
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(http.StatusInternalServerError)
+
+		if _, err = w.Write(resp); err != nil {
+			return nil, errtrace.Wrap(err)
+		}
+
+		return nil, errtrace.Wrap(uerr)
 	}
 	//TODO:Нужно собирать данные пользака по типу айпи и тд
-	return nil
+	return conn, nil
 }

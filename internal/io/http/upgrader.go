@@ -5,7 +5,6 @@ import (
 )
 
 func (h *Handlers) UpToWs(c *echo.Context) error {
-	h.setUpAndUpgade(c.Response(),c.Request())
-	return nil //TODO
+	_, err := h.setUpAndUpgade(c.Response(), c.Request())
+	return err //TODO
 }
-
