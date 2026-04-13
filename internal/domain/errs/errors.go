@@ -7,6 +7,9 @@ type ErrorText string
 const (
 	ValidatePhoneError             ErrorText = "Phone number validation error"
 	FailedToUpgradeHTTPToWebSocket ErrorText = "Failed to upgrage connection"
+	EmptyMessageError 			   ErrorText = "Empty message error"
+	EmptySenderError			   ErrorText = "Emtpy sender error"
+	EmptyChatIdError			   ErrorText = "Emtpy chatid error"
 )
 
 func NewError(s ErrorText) error {
