@@ -1,0 +1,54 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+#default_stages: [commit]
+#fail_fast: false
+#
+default_stages: [pre-commit, manual]
+exclude: ^(vendor/|docs/|migrations/|generated/)
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-merge-conflict
+      - id: check-yaml
+        exclude: ^(deploy/all/(dev|stage|prd)/values\.yml|deploy/configs/\.go-lint\.yml)$
+      - id: check-json
+      - id: trailing-whitespace
+        args: [ "--markdown-linebreak-ext=md" ]
+        always_run: true
+        pass_filenames: true
+        require_serial: false
+      - id: end-of-file-fixer
+        always_run: true
+        pass_filenames: true
+        require_serial: false
+      - id: check-added-large-files
+        args: [ '--maxkb=1024' ]
+
+  - repo: https://github.com/segmentio/golines
+    rev: v0.13.0
+    hooks:
+      - id: golines
+        stages: [manual, pre-commit]
+
+  - repo: https://github.com/golangci/golangci-lint
+    rev: v2.10.1
+    hooks:
+      - id: golangci-lint-full
+        name: golangci-lint-full
+        description: Fast linters runner for Go. Runs on all files in the repo. Use this hook if you use pre-commit in CI.
+        entry: golangci-lint run --fix --config=configs/.golangci.yml
+        types: [ go ]
+        language: golang
+        require_serial: true
+        pass_filenames: false
+
+  - repo: local
+    hooks:
+      - id: go-test
+        name: go-test
+        description: Run go tests
+        entry: go test -v ./...
+        language: system
+        pass_filenames: false

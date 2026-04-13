@@ -1,0 +1,47 @@
+# Binaries and build output
+/bin/
+/build/
+/dist/
+/out/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Go coverage and profiling
+*.coverprofile
+coverage.out
+coverage.html
+*.prof
+cpu.prof
+mem.prof
+
+# Dependency directories (раскомментируйте, если vendor не коммитите)
+# vendor/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Logs and temp
+*.log
+/tmp/
+/temp/
+
+# Editors and IDEs
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Optional: локальные настройки редактора (раскомментируйте при необходимости)
+# .vscode/
