@@ -121,7 +121,7 @@ formatters:
   settings:
     goimports:
       local-prefixes:
-        - gitlab.wildberries.ru
+        - github.com
   exclusions:
     generated: lax
     paths:
