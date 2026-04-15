@@ -14,7 +14,7 @@ type Chat struct {
 	chatType             types.ChatType
 	members              map[types.UserID]struct{}
 	mu 					 sync.RWMutex
-	history              []types.MessageID
+	history              map[types.MessageID]struct{}//TODO:(OSTAP) сделай методы хистори
 	createdAt            time.Time
 	updatedAt            time.Time
 }
@@ -25,6 +25,7 @@ func NewPrivateChat (creator types.UserID) *Chat {
         chatType:             types.PrivateChat,
         firstMessageSenderID: creator,
         members:              map[types.UserID]struct{}{creator: {}},
+		history: 			  map[types.MessageID]struct{}{},
         createdAt:            time.Now(),
         updatedAt:            time.Now(),
     }
@@ -40,6 +41,7 @@ func (c *Chat) HasMember(id types.UserID) bool{
 	defer c.mu.RUnlock()
 	return c.hasMember(id)
 }
+
 func (c *Chat) AddMember(id types.UserID)bool{
 	c.mu.Lock()
 
@@ -81,14 +83,8 @@ func (c *Chat) Members() map[types.UserID]struct{} {
 	return membersCopy
 }
 
-func (c *Chat) History() []types.MessageID {
-	c.mu.RLock()
-	defer c.mu.RUnlock()
-
-	historyCopy := make([]types.MessageID, len(c.history))
-	copy(historyCopy, c.history)
-
-	return historyCopy
+func (c *Chat) History() map[types.MessageID]struct{}{
+	return c.history
 }
 
 func (c *Chat) CreatedAt() time.Time {
