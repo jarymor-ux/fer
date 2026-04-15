@@ -13,13 +13,9 @@ type User struct {
 }
 
 func NewUser(phone types.PhoneNumber)(*User,error){
-	res,err  := phone.ValidatePhone()
+	isValid := phone.ValidatePhone()
 
-	if err != nil{
-		return nil,errtrace.Wrap(err)
-	}
-
-	if !res{
+	if !isValid{
 		return nil,errtrace.Wrap(errs.NewError(errs.ValidatePhoneError))
 	}
 	
@@ -30,15 +26,10 @@ func NewUser(phone types.PhoneNumber)(*User,error){
 
 }
 
-func (u *User)ChangePhone(phone types.PhoneNumber)error {
-	res,err  := phone.ValidatePhone()
+func (u *User)SetPhone(phone types.PhoneNumber)error {
+	isValid  := phone.ValidatePhone()
 
-	
-	if err != nil{
-		return errtrace.Wrap(err)
-	}
-
-	if !res{
+	if !isValid{
 		return errtrace.Wrap(errs.NewError(errs.ValidatePhoneError))
 	}
 	
