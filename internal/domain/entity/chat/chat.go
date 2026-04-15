@@ -1,9 +1,11 @@
 package chat
 
 import (
+	"sync"
 	"time"
 
 	"github.com/jarymor-ux/fer/internal/domain/types"
+	"github.com/jarymor-ux/fer/internal/utils"
 )
 
 type Chat struct {
@@ -11,9 +13,56 @@ type Chat struct {
 	firstMessageSenderID types.UserID
 	chatType             types.ChatType
 	members              map[types.UserID]struct{}
+	mu 					 sync.RWMutex
 	history              []types.MessageID
 	createdAt            time.Time
 	updatedAt            time.Time
+}
+
+func NewPrivateChat (creator types.UserID) *Chat {
+    return &Chat{
+        chatID:               types.ChatID(utils.GenerateUUID()),
+        chatType:             types.PrivateChat,
+        firstMessageSenderID: creator,
+        members:              map[types.UserID]struct{}{creator: {}},
+        createdAt:            time.Now(),
+        updatedAt:            time.Now(),
+    }
+}
+
+func (c *Chat) hasMember(id types.UserID) bool{
+	_,found := c.members[id]
+	return found
+}
+
+func (c *Chat) HasMember(id types.UserID) bool{
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+	return c.hasMember(id)
+}
+func (c *Chat) AddMember(id types.UserID)bool{
+	c.mu.Lock()
+
+	defer c.mu.Unlock()
+
+	if !c.hasMember(id){
+	c.members[id] = struct{}{}
+	return true
+	}
+	
+	return false
+}
+
+func (c *Chat) RemoveMember(id types.UserID)bool{
+	c.mu.Lock()
+
+	defer c.mu.Unlock()
+
+	if c.hasMember(id){
+	delete(c.members, id)
+	return true
+	}
+	return false
 }
 
 func (c *Chat) Type() types.ChatType {
@@ -21,11 +70,25 @@ func (c *Chat) Type() types.ChatType {
 }
 
 func (c *Chat) Members() map[types.UserID]struct{} {
-	return c.members
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	membersCopy := make(map[types.UserID]struct{}, len(c.members))
+	for k, v := range c.members {
+		membersCopy[k] = v
+	}
+
+	return membersCopy
 }
 
 func (c *Chat) History() []types.MessageID {
-	return c.history
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	historyCopy := make([]types.MessageID, len(c.history))
+	copy(historyCopy, c.history)
+
+	return historyCopy
 }
 
 func (c *Chat) CreatedAt() time.Time {
