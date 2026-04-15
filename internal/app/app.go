@@ -1,5 +1,12 @@
 package app
 
+import "braces.dev/errtrace"
+
 func StartServer() error {
-	return nil //TODO
+	srv := newWsServer()
+	if err := srv.Start("0.0.0.0:8080"); err != nil {
+		return errtrace.Wrap(err)
+	}
+
+	return nil
 }

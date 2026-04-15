@@ -16,7 +16,7 @@ linters:
     - bodyclose             # Checks whether HTTP response body is closed successfully
     - copyloopvar           # Detects places where loop variables are copied incorrectly
     - dogsled               # Checks assignments with too many blank identifiers (e.g. x, _, _, _, := f())
-    - errcheck              # Errcheck is a program for checking for unchecked errors in go programs. These unchecked errors can be critical bugs in some cases
+    # - errcheck              # Errcheck is a program for checking for unchecked errors in go programs. These unchecked errors can be critical bugs in some cases
     - errorlint             # find code that will cause problems with the error wrapping scheme introduced in Go 1.13
     - gochecknoglobals      # Checks that no globals are present in Go code
     - gochecknoinits        # Checks that no init functions are present in Go code

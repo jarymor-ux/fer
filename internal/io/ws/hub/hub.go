@@ -1,4 +1,4 @@
-package ws
+package hub
 
 import (
 	"github.com/jarymor-ux/fer/internal/io/ws/client"

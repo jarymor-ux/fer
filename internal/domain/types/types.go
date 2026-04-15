@@ -26,6 +26,10 @@ type (
 	HashSet[t any] set.HashSet[t, string]
 )
 
+func (u UserID) String() string {
+	return string(u[:])
+}
+
 func (n PhoneNumber) NormalizePhone() (string, error) {
 	s := string(n)
 
