@@ -1,9 +1,13 @@
 package chat
 
 import (
+	"strings"
 	"sync"
 	"time"
 
+	"braces.dev/errtrace"
+	"github.com/jarymor-ux/fer/internal/domain/entity/message"
+	"github.com/jarymor-ux/fer/internal/domain/errs"
 	"github.com/jarymor-ux/fer/internal/domain/types"
 	"github.com/jarymor-ux/fer/internal/utils"
 )
@@ -14,7 +18,7 @@ type Chat struct {
 	chatType             types.ChatType
 	members              map[types.UserID]struct{}
 	mu 					 sync.RWMutex
-	history              map[types.MessageID]struct{}//TODO:(OSTAP) сделай методы хистори
+	history              []message.Message
 	createdAt            time.Time
 	updatedAt            time.Time
 }
@@ -25,10 +29,14 @@ func NewPrivateChat (creator types.UserID) *Chat {
         chatType:             types.PrivateChat,
         firstMessageSenderID: creator,
         members:              map[types.UserID]struct{}{creator: {}},
-		history: 			  map[types.MessageID]struct{}{},
+		history: 			  []message.Message{},
         createdAt:            time.Now(),
         updatedAt:            time.Now(),
     }
+}
+
+func (c *Chat) AddMessage(msg message.Message){
+	c.history = append(c.history, msg)
 }
 
 func (c *Chat) hasMember(id types.UserID) bool{
@@ -83,7 +91,26 @@ func (c *Chat) Members() map[types.UserID]struct{} {
 	return membersCopy
 }
 
-func (c *Chat) History() map[types.MessageID]struct{}{
+func (c *Chat)GetSubstringMsg(query string)(types.MessageID,error){
+	for _,msg := range c.history{
+		if strings.Contains(msg.Text(),query){
+			return msg.ID(),nil
+		}
+	}
+	return types.MessageID{},errtrace.Wrap(errs.NewError(errs.MessageNotFoundError))
+}
+
+func (c *Chat)GetMessageByID(id types.MessageID)(message.Message,error){
+	for _,msg := range c.history{
+		if msg.ID() == id{
+			return msg,nil
+		}
+	}
+
+	return message.Message{},errtrace.Wrap(errs.NewError(errs.MessageNotFoundError))
+}
+
+func (c *Chat) GetAllMessageHistory() []message.Message{
 	return c.history
 }
 
