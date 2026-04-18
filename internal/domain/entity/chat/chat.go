@@ -5,9 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"braces.dev/errtrace"
 	"github.com/jarymor-ux/fer/internal/domain/entity/message"
-	"github.com/jarymor-ux/fer/internal/domain/errs"
 	"github.com/jarymor-ux/fer/internal/domain/types"
 	"github.com/jarymor-ux/fer/internal/utils"
 )
@@ -91,30 +89,25 @@ func (c *Chat) Members() map[types.UserID]struct{} {
 	return membersCopy
 }
 
-func (c *Chat)GetSubstringMsg(query string)([]types.MessageID,error){
+func (c *Chat)GetSubstringMsg(query string) []types.MessageID{
 	var res []types.MessageID 
 	for _,msg := range c.history{
 		if strings.Contains(msg.Text(),query){
 			res = append(res, msg.ID())
 		}
 	}
-	if len(res) == 0{
-		return res, errtrace.Wrap(errs.NewError(errs.MessageNotFoundError))
-	}
-	return res,nil
+
+	return res
 }
 
-func (c *Chat)GetMessageByID(id types.MessageID)([]message.Message,error){
-	var res []message.Message
+func (c *Chat)GetMessageByID(id types.MessageID)message.Message{
 	for _,msg := range c.history{
 		if msg.ID() == id{
-			res = append(res, msg)
+			return msg
 		}
 	}
-	if len(res) == 0{
-	return res,errtrace.Wrap(errs.NewError(errs.MessageNotFoundError))
-	}
-	return res,nil
+
+	return message.Message{}
 }
 
 func (c *Chat) GetHistory() []message.Message{
