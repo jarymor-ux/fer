@@ -8,8 +8,8 @@ type PhoneStructTest struct {
 	expected bool
 }
 
-func TestPhoneValidate(t *testing.T){
-tests := []PhoneStructTest{
+func TestPhoneValidate(t *testing.T) {
+	tests := []PhoneStructTest{
 		{
 			name:     "valid +7",
 			phone:    PhoneNumber("+79230322122"),
@@ -61,9 +61,9 @@ tests := []PhoneStructTest{
 			expected: false,
 		},
 	}
-for _, test := range tests {
+	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			_, result := test.phone.ValidatePhone()
+			result := test.phone.ValidatePhone()
 			if result != test.expected {
 				t.Errorf("test %s failed: expected %v, got %v",
 					test.name, test.expected, result)

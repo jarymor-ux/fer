@@ -1,0 +1,133 @@
+version: "2"
+run:
+  tests: true
+  allow-parallel-runners: true
+output:
+  formats:
+    text:
+      path: stdout
+      print-linter-name: true
+      print-issued-lines: true
+  path-mode: "abs"
+linters:
+  default: none
+  enable:
+    - asciicheck            # Simple linter to check that your code does not contain non-ASCII identifiers
+    - bodyclose             # Checks whether HTTP response body is closed successfully
+    - copyloopvar           # Detects places where loop variables are copied incorrectly
+    - dogsled               # Checks assignments with too many blank identifiers (e.g. x, _, _, _, := f())
+    - errcheck              # Errcheck is a program for checking for unchecked errors in go programs. These unchecked errors can be critical bugs in some cases
+    - errorlint             # find code that will cause problems with the error wrapping scheme introduced in Go 1.13
+    - gochecknoglobals      # Checks that no globals are present in Go code
+    - gochecknoinits        # Checks that no init functions are present in Go code
+    - goconst               # Finds repeated strings that could be replaced by a constant
+    - gocritic              # The most opinionated Go source code linter. Provides diagnostics that check for bugs, performance and style issues.
+    # Extensible without recompilation through dynamic rules.
+    # Dynamic rules are written declaratively with AST patterns, filters, report message and optional suggestion.
+    - gocyclo               # Computes and checks the cyclomatic complexity of functions
+    - goprintffuncname      # Checks that printf-like functions are named with `f` at the end
+    - gosec                 # Inspects source code for security problems
+    - govet                 # Vet examines Go source code and reports suspicious constructs, such as Printf calls whose arguments do not align with the format string
+    - ineffassign           # Detects when assignments to existing variables are not used
+    - misspell              # Finds commonly misspelled English words in comments
+    - nilerr                # Finds code that returns nil error when the error is non-nil
+    - nakedret              # Checks that functions with naked returns are not longer than a maximum size (can be zero)
+    - nestif                # Reports deeply nested if statements
+    - noctx                 # finds sending http request without context.Context
+    - prealloc              # Finds slice declarations that could potentially be preallocated
+    - predeclared           # Finds declarations that shadow Go predeclared identifiers
+    - revive                # Fast, configurable, extensible, flexible, and beautiful linter for Go. Drop-in replacement of golint
+    - staticcheck           # Staticcheck is a go vet on steroids, applying a ton of static analysis checks
+    - tparallel             # detects inappropriate usage of t.Parallel() method in your Go test codes
+    - unconvert             # Remove unnecessary type conversions
+    - unparam               # Reports unused function parameters
+    - unused                # Checks Go code for unused constants, variables, functions and types
+    - whitespace            # Tool for detection of leading and trailing whitespace
+    - wsl_v5                # Add or remove empty lines to follow coding style
+    - nilerr # finds the code that returns nil even if it checks that the error is not nil
+    - nilnil # checks that there is no simultaneous return of nil error and an invalid value
+    - reassign # checks that package variables are not reassigned
+    - rowserrcheck # checks whether Err of rows is checked successfully
+    - sqlclosecheck # checks that sql.Rows and sql.Stmt are closed
+    - wastedassign # finds wasted assignment statements
+    - durationcheck # checks for two durations multiplied together
+    - errname # checks that sentinel errors are prefixed with the Err and error types are suffixed with the Error
+    - copyloopvar # detects places where loop variables are copied
+    - nosprintfhostport # that sprintf is not used to construct a host:port combination in a URL
+    - godot # checks if comments end in a period
+
+  settings:
+    # `wsl` is deprecated since golangci-lint v2.2.0; use `wsl_v5`.
+    wsl_v5:
+      # Keep previous relaxed behavior from `allow-assign-and-anything: true`.
+      disable:
+        - assign
+    goconst:
+      min-len: 2
+      min-occurrences: 3
+    gocritic:
+      disabled-checks:
+        - commentFormatting
+    gocyclo:
+      min-complexity: 60
+    #gosec:
+      #excludes:
+    misspell:
+      locale: US
+    prealloc:
+      simple: true
+      range-loops: true
+      for-loops: true
+    revive:
+      rules:
+        # https://github.com/mgechev/revive/blob/HEAD/RULES_DESCRIPTIONS.md#package-comments
+        - name: package-comments
+          severity: warning
+          disabled: true
+          exclude: [ "" ]
+    staticcheck:
+      checks:
+        - all
+    godot:
+      exclude:
+        # Exclude todo and fixme comments.
+        - "^fixme:"
+        - "^todo:"
+        - "TODO:"
+  exclusions:
+    generated: lax
+    presets:
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    rules:
+      - linters:
+          - gochecknoglobals
+        path: (^|.*/)pkg/metrics(/|$)
+      - linters:
+          - staticcheck
+        text: ST1000
+    paths:
+      - .git
+      - bin
+      - vendor
+      - third_party$
+      - builtin$
+      - examples$
+formatters:
+  enable:
+    - gofmt
+    - goimports
+  settings:
+    goimports:
+      local-prefixes:
+        - gitlab.wildberries.ru
+  exclusions:
+    generated: lax
+    paths:
+      - .git
+      - bin
+      - vendor
+      - third_party$
+      - builtin$
+      - examples$
