@@ -10,7 +10,7 @@ const (
 	EmptyMessageError              ErrorText = "Empty message error"
 	EmptySenderError               ErrorText = "Empty sender error"
 	EmptyChatIDError               ErrorText = "Empty chatid error"
-	MessageNotFoundError           ErrorText = "Message was not found in history"
+	MessageNotFoundError           ErrorText = "No messages found in history"
 )
 
 func NewError(s ErrorText) error {
