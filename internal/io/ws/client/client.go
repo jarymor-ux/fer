@@ -14,3 +14,13 @@ type Client struct {
 	Conn     *ws.Conn
 	Send     chan []byte
 }
+
+func NewClient(ip net.IP, clientid types.ClientID, userid types.UserID, conn *ws.Conn) *Client {
+	return &Client{
+		ClientIP: ip,
+		ClientID: clientid,
+		UserID:   userid,
+		Conn:     conn,
+		Send:     make(chan []byte),
+	}
+}

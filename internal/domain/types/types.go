@@ -4,7 +4,6 @@ import (
 	"regexp"
 	"strings"
 
-	
 	"github.com/google/uuid"
 )
 
@@ -16,11 +15,11 @@ const (
 )
 
 type (
-	PhoneNumber    string
-	UserID         uuid.UUID
-	ClientID       uuid.UUID
-	MessageID      uuid.UUID
-	ChatID         uuid.UUID
+	PhoneNumber string
+	UserID      uuid.UUID
+	ClientID    uuid.UUID
+	MessageID   uuid.UUID
+	ChatID      uuid.UUID
 )
 
 func (n PhoneNumber) NormalizePhone() string {
@@ -44,7 +43,7 @@ func (n PhoneNumber) NormalizePhone() string {
 }
 
 func (n PhoneNumber) ValidatePhone() bool {
-	normalized:= n.NormalizePhone()
+	normalized := n.NormalizePhone()
 
 	re := regexp.MustCompile(`^\+7[3-9]\d{9}$`)
 

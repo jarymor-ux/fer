@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"braces.dev/errtrace"
+
 	app "github.com/jarymor-ux/fer/internal/app"
 )
 

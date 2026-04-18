@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"braces.dev/errtrace"
+
 	"github.com/google/uuid"
 	"github.com/jarymor-ux/fer/internal/domain/errs"
 	"github.com/jarymor-ux/fer/internal/domain/types"
@@ -16,26 +17,27 @@ type Message struct {
 	senderID    types.UserID
 	messageText string
 	createdAt   time.Time
-	updatedAt 	time.Time
-	isRead 		bool
+	updatedAt   time.Time
+	isRead      bool
 }
 
-func (m *Message) MarkRead(){
-	if !m.isRead{
+func (m *Message) MarkRead() {
+	if !m.isRead {
 		m.isRead = true
 	}
 }
 
-func(m *Message) EditMessage(newText string) error{
+func (m *Message) EditMessage(newText string) error {
 	if newText == "" {
 		return errtrace.Wrap(errs.NewError(errs.EmptyMessageError))
 	}
 
-	if newText == m.messageText{
+	if newText == m.messageText {
 		return nil
 	}
 	m.messageText = newText
 	m.updatedAt = time.Now()
+
 	return nil
 }
 
@@ -44,14 +46,13 @@ func NewMessage(chatID types.ChatID, senderID types.UserID, text string) (*Messa
 		return nil, errtrace.Wrap(errs.NewError(errs.EmptyMessageError))
 	}
 
-		if chatID == types.ChatID(uuid.Nil) {
-		return nil, errtrace.Wrap(errs.NewError(errs.EmptyChatIdError))
+	if chatID == types.ChatID(uuid.Nil) {
+		return nil, errtrace.Wrap(errs.NewError(errs.EmptyChatIDError))
 	}
 
-		if senderID == types.UserID(uuid.Nil) {
+	if senderID == types.UserID(uuid.Nil) {
 		return nil, errtrace.Wrap(errs.NewError(errs.EmptySenderError))
 	}
-
 
 	return &Message{
 		id:          types.MessageID(utils.GenerateUUID()),
@@ -60,7 +61,7 @@ func NewMessage(chatID types.ChatID, senderID types.UserID, text string) (*Messa
 		messageText: text,
 		createdAt:   time.Now(),
 		updatedAt:   time.Now(),
-		isRead: 	 false,
+		isRead:      false,
 	}, nil
 }
 

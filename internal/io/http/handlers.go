@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"braces.dev/errtrace"
+
 	ws "github.com/gorilla/websocket"
 	"github.com/jarymor-ux/fer/internal/io/http/response"
 )
