@@ -6,5 +6,5 @@ import (
 )
 
 func setAPIRoutes(e *echo.Echo, handlers ws.Handlers) {
-	e.GET("/ws", handlers.UpConn) //Убрать в файл api_routes.go func setApiroutes
+	e.GET("/ws", handlers.UpConn)
 }
