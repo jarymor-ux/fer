@@ -91,26 +91,33 @@ func (c *Chat) Members() map[types.UserID]struct{} {
 	return membersCopy
 }
 
-func (c *Chat)GetSubstringMsg(query string)(types.MessageID,error){
+func (c *Chat)GetSubstringMsg(query string)([]types.MessageID,error){
+	var res []types.MessageID 
 	for _,msg := range c.history{
 		if strings.Contains(msg.Text(),query){
-			return msg.ID(),nil
+			res = append(res, msg.ID())
 		}
 	}
-	return types.MessageID{},errtrace.Wrap(errs.NewError(errs.MessageNotFoundError))
+	if len(res) == 0{
+		return res, errtrace.Wrap(errs.NewError(errs.MessageNotFoundError))
+	}
+	return res,nil
 }
 
-func (c *Chat)GetMessageByID(id types.MessageID)(message.Message,error){
+func (c *Chat)GetMessageByID(id types.MessageID)([]message.Message,error){
+	var res []message.Message
 	for _,msg := range c.history{
 		if msg.ID() == id{
-			return msg,nil
+			res = append(res, msg)
 		}
 	}
-
-	return message.Message{},errtrace.Wrap(errs.NewError(errs.MessageNotFoundError))
+	if len(res) == 0{
+	return res,errtrace.Wrap(errs.NewError(errs.MessageNotFoundError))
+	}
+	return res,nil
 }
 
-func (c *Chat) GetAllMessageHistory() []message.Message{
+func (c *Chat) GetHistory() []message.Message{
 	return c.history
 }
 
